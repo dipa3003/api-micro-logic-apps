@@ -5,4 +5,8 @@ export default new (class BlogControllers {
     async find(req: Request, res: Response) {
         BlogServices.find(req, res);
     }
+
+    async create(req: Request, res: Response) {
+        BlogServices.create(req, res);
+    }
 })();
