@@ -2,6 +2,7 @@ import { AppDataSource } from "./data-source";
 import * as express from "express";
 import router from "./route";
 import "dotenv/config";
+import cloudinary from "./libs/cloudinary";
 // import * as dotenv from "dotenv";
 // dotenv.config();
 
@@ -12,6 +13,7 @@ AppDataSource.initialize()
 
         app.use(express.json());
         app.use("/api", router);
+        cloudinary.upload();
 
         app.listen(PORT, () => console.log(`Server running on Port: ${PORT}`));
     })
