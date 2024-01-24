@@ -19,18 +19,34 @@ export default new (class BlogServices {
         }
     }
 
+    async findOne(req: Request, res: Response): Promise<Response> {
+        try {
+            const id = Number(req.params.id);
+
+            const blog = await this.BlogRepository.findOneBy({ id: id });
+
+            if (!blog) return res.status(404).json({ message: "Cannot find a blog with given id" });
+
+            return res.status(200).json(blog);
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "Oops...Something error while find a blog" });
+        }
+    }
+
     async create(req: Request, res: Response): Promise<Response> {
         try {
             const data = req.body;
             // data.userid = 5;
             data.image = res.locals.filename;
             data.author = "super admin";
-            console.log("data req:", data);
+            // console.log("data req:", data);
 
             const { error, value } = CreateBlogSchema.validate(data);
             if (error) return res.status(400).json({ message: error.message });
 
             const urlImage = await cloudinary.destination(value.image);
+            //logic delete image in upload dir willbe here soon...
 
             const newData = {
                 title: value.title,
@@ -39,7 +55,7 @@ export default new (class BlogServices {
                 image: `${urlImage}`,
                 dateCreated: new Date(),
             };
-            console.log("newData:", newData);
+            // console.log("newData:", newData);
 
             // const blog = await this.BlogRepository
             //     .createQueryBuilder()

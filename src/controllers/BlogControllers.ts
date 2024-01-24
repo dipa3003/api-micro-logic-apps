@@ -6,6 +6,10 @@ export default new (class BlogControllers {
         BlogServices.find(req, res);
     }
 
+    async findOne(req: Request, res: Response) {
+        BlogServices.findOne(req, res);
+    }
+
     async create(req: Request, res: Response) {
         BlogServices.create(req, res);
     }
