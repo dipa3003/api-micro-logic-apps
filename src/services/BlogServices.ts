@@ -37,10 +37,8 @@ export default new (class BlogServices {
     async create(req: Request, res: Response): Promise<Response> {
         try {
             const data = req.body;
-            // data.userid = 5;
             data.image = res.locals.filename;
             data.author = "super admin";
-            // console.log("data req:", data);
 
             const { error, value } = CreateBlogSchema.validate(data);
             if (error) return res.status(400).json({ message: error.message });
@@ -55,14 +53,7 @@ export default new (class BlogServices {
                 image: `${urlImage}`,
                 dateCreated: new Date(),
             };
-            // console.log("newData:", newData);
 
-            // const blog = await this.BlogRepository
-            //     .createQueryBuilder()
-            //     .insert()
-            //     .into(Blog)
-            //     .values(data)
-            //     .execute()
             const blog = await this.BlogRepository.insert(newData);
             return res.status(201).json(blog);
         } catch (error) {
