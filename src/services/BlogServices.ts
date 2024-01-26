@@ -10,7 +10,6 @@ export default new (class BlogServices {
 
     async find(req: Request, res: Response): Promise<Response> {
         try {
-            // const blogs = await this.BlogRepository.createQueryBuilder("blog").getMany();
             const blogs = await this.BlogRepository.find();
             return res.status(200).json(blogs);
         } catch (error) {
@@ -38,7 +37,8 @@ export default new (class BlogServices {
         try {
             const data = req.body;
             data.image = res.locals.filename;
-            data.author = "super admin";
+            data.userId = res.locals.loginSession.user.id;
+            data.author = res.locals.loginSession.user.fullname;
 
             const { error, value } = CreateBlogSchema.validate(data);
             if (error) return res.status(400).json({ message: error.message });
@@ -52,6 +52,7 @@ export default new (class BlogServices {
                 author: value.author,
                 image: `${urlImage}`,
                 dateCreated: new Date(),
+                user: value.userId,
             };
 
             const blog = await this.BlogRepository.insert(newData);

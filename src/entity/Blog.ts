@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { User } from "./User";
 
 @Entity({ name: "blogs" })
 export class Blog {
@@ -19,4 +20,9 @@ export class Blog {
 
     @Column()
     dateCreated: Date;
+
+    @ManyToOne(() => User, (user) => user.blogs, {
+        onUpdate: "CASCADE",
+    })
+    user: User;
 }
