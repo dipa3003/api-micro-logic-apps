@@ -62,4 +62,22 @@ export default new (class BlogServices {
             return res.status(500).json({ message: "Oops...Something error while create a blog" });
         }
     }
+
+    async delete(req: Request, res: Response): Promise<Response> {
+        try {
+            const id = Number(req.params.id);
+
+            const findBlog = await this.BlogRepository.findOneBy({ id: id });
+            if (!findBlog) return res.status(400).json({ message: "Cannot find blog with given id", response: findBlog });
+
+            cloudinary.delete(findBlog.image);
+            // const response = await this.BlogRepository.delete(id);
+
+            // return res.status(200).json({ message: "delete success", response });
+            return res.status(200).json({ message: "delete success" });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "Oops...Something error while delete a blog" });
+        }
+    }
 })();
