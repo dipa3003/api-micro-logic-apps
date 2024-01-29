@@ -9,6 +9,7 @@ const router = express.Router();
 router.get("/blogs", BlogControllers.find);
 router.get("/blogs/:id", BlogControllers.findOne);
 router.post("/blogs/add", Auth.authentication, UploadFile.upload("image"), BlogControllers.create);
+router.patch("/blogs/:id", Auth.authentication, UploadFile.upload("image"), BlogControllers.update);
 router.delete("/blogs/:id", BlogControllers.delete);
 
 router.post("/register", UserControllers.register);

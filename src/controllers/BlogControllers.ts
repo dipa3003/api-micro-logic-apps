@@ -14,6 +14,10 @@ export default new (class BlogControllers {
         BlogServices.create(req, res);
     }
 
+    update(req: Request, res: Response) {
+        BlogServices.update(req, res);
+    }
+
     delete(req: Request, res: Response) {
         BlogServices.delete(req, res);
     }

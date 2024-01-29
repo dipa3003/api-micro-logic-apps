@@ -14,7 +14,6 @@ export default new (class Auth {
 
             try {
                 const jwtPayload = jwt.verify(token, "secretkey");
-                console.log("payloadjwt:", jwtPayload);
                 res.locals.loginSession = jwtPayload;
                 next();
             } catch (error) {

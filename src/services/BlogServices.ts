@@ -63,6 +63,39 @@ export default new (class BlogServices {
         }
     }
 
+    async update(req: Request, res: Response): Promise<Response> {
+        try {
+            const id = Number(req.params.id);
+            const data = req.body;
+            data.image = res.locals.filename;
+            data.userId = res.locals.loginSession.user.id;
+            data.author = res.locals.loginSession.user.fullname;
+
+            const checkBlog = await this.BlogRepository.existsBy({ id: id });
+            if (!checkBlog) return res.status(404).json({ message: "Blog not found or does not exist" });
+
+            const { error, value } = CreateBlogSchema.validate(data);
+            if (error) return res.status(400).json({ message: error.message });
+
+            const urlImg = await cloudinary.destination(value.image);
+
+            const newData = {
+                title: value.title,
+                description: value.description,
+                author: value.author,
+                image: `${urlImg}`,
+                dateCreated: new Date(),
+                user: value.userId,
+            };
+
+            const response = await this.BlogRepository.update(id, newData);
+            return res.status(201).json({ message: "success update blog", response });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: "Oops...Something error while update a blog" });
+        }
+    }
+
     async delete(req: Request, res: Response): Promise<Response> {
         try {
             const id = Number(req.params.id);
@@ -71,10 +104,9 @@ export default new (class BlogServices {
             if (!findBlog) return res.status(400).json({ message: "Cannot find blog with given id", response: findBlog });
 
             cloudinary.delete(findBlog.image);
-            // const response = await this.BlogRepository.delete(id);
+            const response = await this.BlogRepository.delete(id);
 
-            // return res.status(200).json({ message: "delete success", response });
-            return res.status(200).json({ message: "delete success" });
+            return res.status(200).json({ message: "delete success", response });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ message: "Oops...Something error while delete a blog" });

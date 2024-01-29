@@ -13,7 +13,6 @@ export default new (class CloudinaryConfig {
     async destination(image: string): Promise<any> {
         try {
             const cloudinaryRes = await cloudinary.uploader.upload(`src/uploads/${image}`);
-            console.log("cloudinaryRes:", cloudinaryRes);
             return cloudinaryRes.secure_url;
         } catch (error) {
             throw error;
