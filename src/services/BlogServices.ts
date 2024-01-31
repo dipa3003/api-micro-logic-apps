@@ -4,6 +4,7 @@ import { AppDataSource } from "../data-source";
 import { Request, Response } from "express";
 import { CreateBlogSchema } from "../utils/validator/BlogValidator";
 import cloudinary from "../libs/cloudinary";
+import deleteUploadImg from "../utils/uploadFiles/delete-upload-img";
 
 export default new (class BlogServices {
     private readonly BlogRepository: Repository<Blog> = AppDataSource.getRepository(Blog);
@@ -45,6 +46,7 @@ export default new (class BlogServices {
 
             const urlImage = await cloudinary.destination(value.image);
             //logic delete image in upload dir willbe here soon...
+            await deleteUploadImg();
 
             const newData = {
                 title: value.title,
