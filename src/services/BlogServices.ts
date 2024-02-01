@@ -45,7 +45,6 @@ export default new (class BlogServices {
             if (error) return res.status(400).json({ message: error.message });
 
             const urlImage = await cloudinary.destination(value.image);
-            //logic delete image in upload dir willbe here soon...
             await deleteUploadImg();
 
             const newData = {

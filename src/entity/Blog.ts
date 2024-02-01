@@ -23,6 +23,7 @@ export class Blog {
 
     @ManyToOne(() => User, (user) => user.blogs, {
         onUpdate: "CASCADE",
+        onDelete: "CASCADE",
     })
     user: User;
 }

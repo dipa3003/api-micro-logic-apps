@@ -23,6 +23,7 @@ export class User {
 
     @OneToMany(() => Blog, (blog) => blog.user, {
         onUpdate: "CASCADE",
+        onDelete: "CASCADE",
     })
     blogs: Blog[];
 }
